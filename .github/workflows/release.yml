@@ -8,26 +8,27 @@ jobs:
   guidelines-update-alert-discord:
     runs-on: ubuntu-latest
     steps:
-      - name: Guidelines update alert discord
-        uses: SethCohen/github-releases-to-discord@v1
+      - name: Send Custom Discord Notification (No Title Link)
+        # 💡 SWITCHING TO A MORE FLEXIBLE ACTION 💡
+        uses: tsick/discord-webhook-action@v2
         with:
+          # Use the secret you created
           webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
-          # --- Changes to address your request ---
           
-          # 1. Custom Title and Removal of Link:
-          # Use the Release Name/Title as the text, but do not include a URL link.
-          # The variable ${{ github.event.release.name }} holds the release title you set.
-          title: "Guidelines got updated."
-          # By leaving the URL parameter out (or setting it to empty), 
-          # you prevent the title text from becoming a hyperlink.
-          # url: "" # You can remove this line, as omitting it removes the link.
+          # 1. Title without link: This action allows you to set the 
+          # title and link (url) separately.
+          embed_title: "Guidelines got updated."
+          # OMITTING the 'embed_url' parameter ensures the title is plain text!
           
-          # 2. Timestamp:
-          # This action typically includes the publish date/time by default.
-          # We don't need to add a specific parameter, but if you want to ensure the 
-          # current time is sent, you can use the built-in variable.
-          timestamp: ${{ github.event.release.published_at }}
+          # 2. Content/Body: This is the main release description
+          content: "${{ github.event.release.body }}" 
           
-          # --- Original options ---
-          color: "2105893"
+          # 3. Timestamp: Uses the same reliable variable for the publication time
+          embed_timestamp: ${{ github.event.release.published_at }}
+          
+          # 4. Appearance: Set the username and color for the webhook
           username: "Guidelines"
+          color: "2105893" 
+          
+          # OPTIONAL: You can include the author who created the release
+          embed_footer_text: "Released by ${{ github.event.release.author.login }}"
