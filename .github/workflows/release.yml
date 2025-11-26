@@ -8,12 +8,7 @@ jobs:
   guidelines-update-alert-discord:
     runs-on: ubuntu-latest
     steps:
-      # Ensure you check out the repository if you plan to use local files later, 
-      # but it's not strictly necessary for just passing variables.
-      # - uses: actions/checkout@v4 
-      
       - name: Send Custom Discord Notification (No Title Link)
-        # Using the correct version: v7.0.0 is the latest stable version mentioned in the docs
         uses: tsickert/discord-webhook@v7.0.0 
         with:
           # REQUIRED: Use kebab-case for all inputs
@@ -21,19 +16,22 @@ jobs:
           
           # 1. Custom Title (No Link):
           embed-title: "Guidelines got updated."
-          # NOTE: We omit 'embed-url' to ensure the title is not a hyperlink.
           
-          # 2. Content/Body: This is the message text outside the embed
-          # Use 'embed-description' if you want the release body *inside* the embed box.
-          # We'll use 'embed-description' for better formatting and keep 'content' blank.
+          # 2. Content/Body: Main release description
           embed-description: "${{ github.event.release.body }}" 
           
           # 3. Timestamp:
           embed-timestamp: ${{ github.event.release.published_at }}
           
-          # 4. Appearance:
+          # 4. Custom Appearance and Branding:
           username: "Guidelines"
-          embed-color: "2105893" 
           
-          # OPTIONAL: You can include the author who created the release
+          # ✅ HEX COLOR: Use the decimal equivalent of the hex F66590
+          embed-color: "16147856" 
+          
+          # 5. Footer with PFP:
+          # Text content for the footer
           embed-footer-text: "Released by ${{ github.event.release.author.login }}"
+          
+          # ✅ PFP URL: Uses the author's avatar URL from the GitHub event payload
+          embed-footer-icon-url: ${{ github.event.release.author.avatar_url }}
