@@ -18,7 +18,12 @@ jobs:
           embed-title: "Guidelines got updated."
           
           # 2. Content/Body: Main release description
-          embed-description: "${{ github.event.release.body }}" 
+          embed-description: |
+            # ${{ github.event.release.name }}
+            
+            ${{ github.event.release.body }}
+
+          embed-image-url: https://i.imgur.com/A5gHDaQ.jpeg
           
           # 3. Timestamp:
           embed-timestamp: ${{ github.event.release.published_at }}
