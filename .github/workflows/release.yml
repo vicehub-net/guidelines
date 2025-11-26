@@ -1,0 +1,18 @@
+name: Notify Discord on New Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  github-releases-to-discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GitHub Releases to Discord
+        uses: SethCohen/github-releases-to-discord@v1
+        with:
+          # Use the secret you created in Step 2
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }} 
+          # Optional: Customize the message's appearance
+          color: "2105893"
+          username: "Release Changelog"
