@@ -2,7 +2,7 @@ name: Notify Discord on New Release
 
 on:
   release:
-    types: [published] # Runs when a release is published
+    types: [published]
 
 jobs:
   guidelines-update-alert-discord:
@@ -11,13 +11,10 @@ jobs:
       - name: Send Custom Discord Notification (No Title Link)
         uses: tsickert/discord-webhook@v7.0.0 
         with:
-          # REQUIRED: Use kebab-case for all inputs
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
           
-          # 1. Custom Title (No Link):
           embed-title: "Guidelines got updated."
           
-          # 2. Content/Body: Main release description
           embed-description: |
             # ${{ github.event.release.name }}
             
@@ -25,18 +22,12 @@ jobs:
 
           embed-image-url: https://i.imgur.com/A5gHDaQ.jpeg
           
-          # 3. Timestamp:
           embed-timestamp: ${{ github.event.release.published_at }}
           
-          # 4. Custom Appearance and Branding:
           username: "Guidelines"
           
-          # ✅ HEX COLOR: Use the decimal equivalent of the hex F66590
           embed-color: "16147856" 
           
-          # 5. Footer with PFP:
-          # Text content for the footer
           embed-footer-text: "Released by ${{ github.event.release.author.login }}"
           
-          # ✅ PFP URL: Uses the author's avatar URL from the GitHub event payload
           embed-footer-icon-url: ${{ github.event.release.author.avatar_url }}
